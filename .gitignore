@@ -1,0 +1,8 @@
+# eclipse IDE files
+/.settings/
+/.project
+/.buildpath
+
+.DS_Store
+
+/test-data/
