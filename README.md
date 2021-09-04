@@ -8,11 +8,10 @@ It makes it easier to find out which files are taking up a lot of space on the d
 
 This tool is inspired by [“WinDirStat”](https://windirstat.net/)  on Windows and [“Disk Inventory X”](http://www.derlien.com/) on MacOS.
 
-!![WebDirStat screenshot](screenshots/webdirstat-screenshot.png) 
-
+![WebDirStat screenshot](screenshots/webdirstat-screenshot.png).  
+ 
 Its also show the statistics of files grouped by their type (PNG, JPG, HTML...)
-
-![WebDirStat screenshot](screenshots/statistics-screenshot.png) 
+![WebDirStat screenshot](screenshots/statistics-screenshot.png)
 
 
 ## Getting Started
@@ -22,15 +21,15 @@ Its also show the statistics of files grouped by their type (PNG, JPG, HTML...)
 1. Download only the file WebDirStat.php (you can rename it if you want)
 2. Open the file with a text editor, and modify this line:
    ```php
-   $password = '' ; 
+   $password = '' ;
    ```
-	<br /> and change the empty password with a **strong** one.
+   and change the empty password with a **strong** one.
 3. Upload the file to your web server
 4. Access the file via your web browser (e.g. http://you-web-server/webdirstat.php)
 5. Enter the password you chose earlier
 6. Select the folder you want to scan and click the button
 
-Note: You can delete the file once you don't need it anymore 
+Note: You can delete the file once you don't need it anymore. 
 
 ### Enhancements and bug fixes
 
