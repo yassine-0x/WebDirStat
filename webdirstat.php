@@ -631,7 +631,7 @@ function display($page_title, $page_content){
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
       <div class="container-fluid">
-        <a class="navbar-brand" href="https://github.com">WebDirStat &nbsp;<sub>v0.1</sub>
+        <a class="navbar-brand" href="https://github.com/yassine-0x/WebDirStat">WebDirStat &nbsp;<sub>v0.1</sub>
         	<i class="bi bi-github ms-2"></i>      	
         </a> 
         
