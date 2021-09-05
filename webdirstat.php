@@ -1,6 +1,6 @@
 <?php 
 
-$password = '' ;    // Please use a strong password  
+$password = '1234XX' ;    // Please use a strong password  
 
 // version 
 define("VERSION", "0.1" );
@@ -73,7 +73,13 @@ class File{
     
     public $error = false ;
     
+    public $lastModificationTime ; 
     
+    
+    /**
+     * constructor
+     * @param string $path absolute or relative path of the file
+     */
     public function __construct($path){
         $this->id = self::$counter++;
         $this->path = $path;
@@ -84,8 +90,13 @@ class File{
         
         $stats = stat($path);
         $this->sizeOnDisk = $stats['blocks'] * 512;
+        $this->lastModificationTime = $stats['mtime'];
     }
     
+    /**
+     * Add a file to the folder
+     * @param File $file 
+     */
     public function addFile($file){
         if($this->children === null)
             $this->children = array() ;
@@ -814,6 +825,8 @@ function display_scan($data){
               <th>SizeOnDisk</th>
               <?php } ?>
               
+              <th>Last Change</th>
+              
               <th>Items</th>
               <th>Files</th>
               <th>Subdirs</th>
@@ -873,6 +886,8 @@ function display_scan($data){
                 <td><?php echo format_file_size($file->sizeOnDisk) ?></td>
                 <?php } ?>
                 
+                <td><?php echo date('Y-m-d H:i', $file->lastModificationTime) ?></td>
+                
         		<td><?php if($file->isDir) echo $file->itemsCount ?></td>
         		<td><?php if($file->isDir) echo $file->filesCount ?></td>
         		<td><?php if($file->isDir) echo $file->subdirsCount ?></td>
@@ -881,7 +896,10 @@ function display_scan($data){
         <?php } ?>
       </tbody>
     </table>
+
     
+    <!-- Statistics part -->
+
     <h3>Statistics </h3>
     
     <div class="row">
