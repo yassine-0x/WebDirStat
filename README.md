@@ -8,7 +8,7 @@ It makes it easier to find out which files are taking up a lot of space on the d
 
 This tool is inspired by [“WinDirStat”](https://windirstat.net/)  on Windows and [“Disk Inventory X”](http://www.derlien.com/) on MacOS.
 
-![WebDirStat screenshot](screenshots/webdirstat-screenshot.png).  
+![WebDirStat screenshot](screenshots/webdirstat-screenshot.png)  
  
 Its also show the statistics of files grouped by their type (PNG, JPG, HTML...)
 ![WebDirStat screenshot](screenshots/statistics-screenshot.png)
@@ -40,3 +40,7 @@ Note: You can delete the file once you don't need it anymore.
 ## License
 
  Distributed under the MIT License. See LICENSE for more information.
+
+## Contact
+
+Yassine - [yassine00fr@gmail.com](mailto:yassine00fr@gmail.com) 

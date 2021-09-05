@@ -1,6 +1,6 @@
 <?php 
 
-$password = '1234XX' ;    // Please use a strong password  
+$password = '' ;    // Please use a strong password  
 
 // version 
 define("VERSION", "0.1" );
