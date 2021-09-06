@@ -475,19 +475,20 @@ function get_files_stats($files_list) {
         if($file->isDir)
             continue ;
         
+        $lower_case_extension = strtolower($file->extension); // to avoid differentiate between .txt and .TXT for example
         
-        if(!isset($stats[$file->extension])){
+        if(!isset($stats[$lower_case_extension])){
             $obj = new stdClass();
             $obj->extension = $file->extension ;
             $obj->count = 0 ;
             $obj->size = 0 ;
             $obj->sizeOnDisk = 0 ;
-            $stats[$file->extension]= $obj;
+            $stats[$lower_case_extension]= $obj;
         }
         
-        $stats[$file->extension]->count++ ;
-        $stats[$file->extension]->size += $file->size ;
-        $stats[$file->extension]->sizeOnDisk += $file->sizeOnDisk ;
+        $stats[$lower_case_extension]->count++ ;
+        $stats[$lower_case_extension]->size += $file->size ;
+        $stats[$lower_case_extension]->sizeOnDisk += $file->sizeOnDisk ;
     }
     
     // sort stats by total size
