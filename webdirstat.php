@@ -3,7 +3,7 @@
 $password = '' ;    // Please use a strong password  
 
 // version 
-define("VERSION", "0.1" );
+define("VERSION", "0.1.1" );
 
 
 session_start();    // open the session
@@ -89,9 +89,12 @@ class File{
         $this->size = ($this->isDir) ? 0: filesize($this->path);
         
         $stats = stat($path);
-        $this->sizeOnDisk = $stats['blocks'] * 512;
-        $this->lastModificationTime = $stats['mtime'];
+        if($stats){
+            $this->sizeOnDisk = $stats['blocks'] * 512;
+            $this->lastModificationTime = $stats['mtime'];
+        } 
     }
+    
     
     /**
      * Add a file to the folder
@@ -124,6 +127,8 @@ function is_post(){
  * @return boolean logged or not
  */
 function has_permission(){
+    if(!isset($_SESSION['wds_access']))
+        return false;
     return $_SESSION['wds_access'] == "1" ;
 }
 
@@ -362,16 +367,12 @@ function compare_files_size($file1, $file2){
     
     // if both files are the same size, return folders first 
     if( $size1 == $size2){
-        if($file1->isDir && !$file2->isDir)
-            return false;
-        if(!$file1->isDir && $file2->isDir)
-            return true;
         
         // for small files smaller than the block size
-        return $file1->size < $file2->size ;
+        return $file2->size - $file1->size ;
     }
     
-    return $size1 < $size2 ;
+    return $size2 - $size1 ;
 }
 
 /**
@@ -522,7 +523,7 @@ function action_login(){
     // if POST
     if(is_post()){
         // if the password is correct
-        if($_POST['password'] === $password){
+        if(isset($_POST['password']) && $_POST['password'] === $password){
             $_SESSION['wds_access'] = "1" ;
             redirect_to_action('select');
         }else{
@@ -604,7 +605,7 @@ function display($page_title, $page_content){
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" >
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-        <?php if($_GET['action']=='scan') { ?>
+        <?php if(isset($_GET['action']) && $_GET['action']=='scan') { ?>
         <style>
         
             .treegrid.table-hover > tbody > tr:hover .progress {
@@ -643,13 +644,13 @@ function display($page_title, $page_content){
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
       <div class="container-fluid">
-        <a class="navbar-brand" href="https://github.com/yassine-0x/WebDirStat">WebDirStat &nbsp;<sub>v0.1</sub>
+        <a class="navbar-brand" href="https://github.com/yassine-0x/WebDirStat">WebDirStat &nbsp;<sub>v<?php echo VERSION ?></sub>
         	<i class="bi bi-github ms-2"></i>      	
         </a> 
         
         
         
-        <?php if($_GET['action']=='scan'){ ?>
+        <?php if(isset($_GET['action']) && $_GET['action']=='scan'){ ?>
         <span class="navbar-text text-light small">
           Path : <?php echo htmlspecialchars($_POST['path']) ?>
         </span>
@@ -686,7 +687,7 @@ function display($page_title, $page_content){
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     
-    <?php if($_GET['action']=='scan') { ?>
+    <?php if(isset($_GET['action']) && $_GET['action']=='scan') { ?>
     
     <script type="text/javascript" >
     
@@ -843,10 +844,10 @@ function display_scan($data){
 
         foreach ($files as $file) { ?>
         
-        	<tr id="treegrid-<?php echo $file->id ?>" class="<?php 
-                echo "treegrid-parent-".$file->parent->id." " ;
+        	<tr id="treegrid-<?php echo $file->id ?>" class="<?php              
                 // echo 'depth-'.$file->depth.' ';
                 if ($file->parent){
+                    echo "treegrid-parent-".$file->parent->id." " ;
                     foreach ($file->parentsIds as $parent_id) {
                          echo "treegrid-collapse-".$parent_id." " ;
                     }    
