@@ -18,7 +18,7 @@ Its also show the statistics of files grouped by their type (PNG, JPG, HTML...)
 
 ### Steps
 
-1. Download only the file WebDirStat.php (you can rename it if you want)
+1. Download only the file webdirstat.php (you can rename it if you want)
 2. Open the file with a text editor, and modify this line:
    ```php
    $password = '' ;
