@@ -565,9 +565,9 @@ function action_scan(){
     // if POST
     if(is_post()){
         $path = $_POST['path'];
-        if(file_exists($path) && is_dir($path)){
+        if(@file_exists($path) && is_dir($path)){
             session_write_close(); // close the session to not block the other pages
-			set_time_limit(1800);  // 30 minutes timeout
+			@set_time_limit(1800);  // 30 minutes timeout
 
             $tree = scan_folder($path);
             $files = tree_to_array($tree);
@@ -577,7 +577,7 @@ function action_scan(){
             
             display_scan($data);
         }else{
-            add_error_message('This location does not exist or is not a directory ! "'.htmlspecialchars($path).'"');
+            add_error_message('This location does not exist or is not a directory or You don\'t have the permissions ! "'.htmlspecialchars($path).'"');
             redirect_to_action('select');
         }
       
