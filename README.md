@@ -40,7 +40,3 @@ Note: You can delete the file once you don't need it anymore.
 ## License
 
  Distributed under the MIT License. See LICENSE for more information.
-
-## Contact
-
-Yassine - [yassine00fr@gmail.com](mailto:yassine00fr@gmail.com) 
