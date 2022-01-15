@@ -1,9 +1,9 @@
 <?php 
 
-$password = '' ;    // Please use a strong password  
+$password = '1234' ;    // Please use a strong password  
 
 // version 
-define("VERSION", "0.1.1" );
+define("VERSION", "0.1.2" );
 
 
 session_start();    // open the session
@@ -157,19 +157,6 @@ function redirect_to_action($action){
 
 
 /**
- * Just a debug function like var_dump() and print_r()
- */
-function debug($param){
-    if($param && $param !== true ){
-        echo '<pre>'; print_r($param) ; echo '</pre>';
-    }else{
-        echo '<pre>'; var_dump($param) ; echo '</pre>';
-    }
-    
-}
-
-
-/**
  * Check if the server is running on Windows
  * @return boolean
  */
@@ -268,7 +255,6 @@ function format_file_size($bytes){
     foreach ($arBytes as $arItem) {
         if ($bytes >= $arItem["VALUE"]) {
             $result = $bytes / $arItem["VALUE"];
-            //$result = str_replace(".", ",", strval(round($result, 2))) . " " . $arItem["UNIT"];
             $result = strval(round($result, 1)) . " " . $arItem["UNIT"];
             break;
         }
@@ -277,7 +263,7 @@ function format_file_size($bytes){
 }
 
 /**
- * get all files inside a directory. 
+ * get all files inside a directory. (this function is recursive)
  * This function is recursive and return the result in form of tree object
  * @param String $dir the directory to scan
  * @param Object $current_dir
@@ -299,19 +285,16 @@ function get_dir_files($dir, &$current_dir = null) {
     }
     
     if(is_array($files)){
-        foreach ($files as $filename) {
-    
+        foreach ($files as $filename) { 
             if ($filename == "." || $filename == "..")   // skip . and .. directories
                 continue; 
     
-            // debug($filename);
             $path = realpath($dir . DIRECTORY_SEPARATOR . $filename);
             
             $file = new File($path);
     
             $current_dir->addFile($file);    // add the file to the folder
     
-     
             // if is directory
             if ($file->isDir) {
                  get_dir_files($path, $file);
@@ -427,7 +410,7 @@ function tree_to_array($tree, &$data=array()){
 }
 
 /**
- * update the size percentage of all files in the tree
+ * update the size percentage of all files in the tree (this function is recursive)
  * @param File $tree
  */
 function update_tree($tree) {
@@ -549,8 +532,6 @@ function action_logout(){
  */
 function action_select(){
     check_permissions();
-
-    // echo "action_select() ";
     display_select();
 }
 
@@ -559,8 +540,6 @@ function action_select(){
  */
 function action_scan(){
     check_permissions();
-    
-    // echo "action_scan() ";
     
     // if POST
     if(is_post()){
@@ -649,7 +628,6 @@ function display($page_title, $page_content){
         </a> 
         
         
-        
         <?php if(isset($_GET['action']) && $_GET['action']=='scan'){ ?>
         <span class="navbar-text text-light small">
           Path : <?php echo htmlspecialchars($_POST['path']) ?>
@@ -658,14 +636,11 @@ function display($page_title, $page_content){
         <a href="?action=select" class="btn btn-sm btn-outline-primary" ><i class="bi bi-search"></i> Scan another location</a>
      	<?php } ?>
      	
-     	
-     	
       	<?php if(has_permission()){ ?>
         <span class="navbar-text">
              <a href="?action=logout" class="btn btn-sm btn-danger" >Logout</a> 
         </span>
         <?php } ?>
-        
         
       </div>
     </nav>
@@ -710,8 +685,6 @@ function display($page_title, $page_content){
                 $('tr.treegrid-parent-'+id).show();
             }
         });
-
-     
     </script>
    
      <?php } ?>
@@ -735,7 +708,6 @@ function display_index(){
     <h1 class="display-5 fw-bold">WebDirStat</h1>
    
     <div class="col-lg-8 mx-auto">
-    
    
     <?php  
         // if the password defined in the beginning of this file is empty, show an error
@@ -749,7 +721,7 @@ function display_index(){
       <p class="lead mb-4"></p>
       
       <div class="  d-flex justify-content-center">
-      	<div class="col-12 col-md-8 ">
+      	<div class="col-12 col-md-6">
       	    <form action="?action=login" method="post" >
                 <div class="form-floating">
                   <input name="password" type="password" class="form-control" id="floatingInput" placeholder="password">
@@ -807,10 +779,8 @@ function display_select(){
  * @param array $data params to use in the page
  */
 function display_scan($data){
-    
     $files = $data['files'];
     $stats = $data['stats'];
-    
     ob_start();
     ?>
    
@@ -820,7 +790,6 @@ function display_scan($data){
               <th class="text-start" >Name</th>
               <th>Subtree Percent</th>
               <th>Percent </th>
-   <?php  /* ?><th>Size B</th><?php /* hide the size in bytes */ ?>
               <th>Size</th>
               
               <?php if(!is_windows_os()){  // hide this column because stat($path)['blocks'] doesn't work in windows ?>
@@ -881,7 +850,6 @@ function display_scan($data){
         		</td>
         		
         		<td><?php echo round($file->percent, 2)  ?> %</td>
-                <?php /* ?><td><?php echo $file->size ?></td><?php /**/ ?>
                 <td><?php echo format_file_size($file->size) ?></td>
                 
                 <?php if(!is_windows_os()){  // hide this column because stat($path)['blocks'] doesn't work in windows ?>
