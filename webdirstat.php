@@ -252,6 +252,7 @@ function format_file_size($bytes){
         )
     );
 
+    $result = "? B";
     foreach ($arBytes as $arItem) {
         if ($bytes >= $arItem["VALUE"]) {
             $result = $bytes / $arItem["VALUE"];
